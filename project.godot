@@ -10,9 +10,10 @@ config_version=4
 
 [application]
 
-config/name="New Game Project"
-run/main_scene="res://BaseScene.tscn"
-config/icon="res://icon.png"
+config/name="Mousville Villain"
+run/main_scene="res://Titlescreen.tscn"
+config/icon="res://icon.ico"
+config/windows_native_icon="res://icon.ico"
 
 [autoload]
 

@@ -21,7 +21,6 @@ func _move_to_mouse():
 	if position.distance_to(get_global_mouse_position()) > stop_distance:
 		var vec = get_global_mouse_position() - position
 		var normalized_vec = vec.normalized()
-		var direction_distance = vec.length()
 		move_and_slide(normalized_vec * GlobalAuto.moveSpeed)
 
 func _look_at_mouse():

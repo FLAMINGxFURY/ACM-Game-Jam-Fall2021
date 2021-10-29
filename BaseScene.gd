@@ -9,18 +9,14 @@ var tdict = OS.get_time()
 func _ready():
 	$Time.start(GlobalAuto.time)
 	# init rng
+	rng.randomize()
 	# scene setting
 	self.scale = Vector2(1,1)
-	
 	# create map
 	create_map()
 
 func create_map():
-	rng.seed = tdict.hour * tdict.minute * tdict.second
-	
-	var CellSize = Vector2(10,10)
-	var height = 480/CellSize.x
-	var width = 270/CellSize.y
+	rng.randomize()
 	# Assuming scale = 2.5 x 2.5:
 	# End X index = 68 
 	# End Y index = 38
@@ -68,8 +64,8 @@ func create_map():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	$Timer.set_text(str(stepify($Time.time_left, 0.01)))
-	#$Score.set_text(str(GlobalAuto.score))
-	$Score.set_text(str(GlobalAuto.moveSpeed))
+	$Score.set_text(str(GlobalAuto.score))
+	#$Score.set_text(str(GlobalAuto.moveSpeed))
 	
 func startingCell(x,y):
 	$TileMap.set_cell(x, y, 0)
