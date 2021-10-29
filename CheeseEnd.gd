@@ -19,6 +19,7 @@ func _ready():
 func _on_Area2D_body_entered(body):
 	if body.is_in_group("Mouse"):
 		get_tree().change_scene("res://BaseScene.tscn")
+		
 		GlobalAuto.score += 1
 		if GlobalAuto.moveSpeed > 50:
 			GlobalAuto.time += .1
