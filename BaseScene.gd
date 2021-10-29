@@ -3,13 +3,12 @@ extends Node2D
 
 # Declare member variables here. Examples:
 var rng = RandomNumberGenerator.new()
-var tdict = OS.get_time()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Time.start(GlobalAuto.time)
 	# init rng
-	rng.seed = tdict.hour * tdict.minute * tdict.second
+	rng.randomize()
 	
 	# scene setting
 	self.scale = Vector2(1,1)
@@ -18,7 +17,7 @@ func _ready():
 	create_map()
 
 func create_map():
-	rng.seed = tdict.hour * tdict.minute * tdict.second
+	rng.randomize()
 	
 	var CellSize = Vector2(10,10)
 	var height = 480/CellSize.x
