@@ -9,6 +9,8 @@ var tdict = OS.get_time()
 func _ready():
 	$Time.start(GlobalAuto.time)
 	# init rng
+	rng.seed = tdict.hour * tdict.minute * tdict.second
+	
 	# scene setting
 	self.scale = Vector2(1,1)
 	
@@ -37,7 +39,7 @@ func create_map():
 	
 	var steps = rng.randi_range(50, 100)
 
-	# first, make the starting box. TODO: add player spawn here
+	# first, make the starting box.
 	startingCell(x,y)
 	for i in range(steps):
 		# first, decide direction
@@ -63,6 +65,8 @@ func create_map():
 		$TileMap.set_cell(x, y+1, 0)
 		$TileMap.set_cell(x+1, y+1, 0)
 	$CheeseEnd.position = $TileMap.map_to_world(Vector2(x+1, y+1))
+	
+	# Makes autotile work
 	$TileMap.update_bitmask_region()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
