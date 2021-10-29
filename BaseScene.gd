@@ -5,20 +5,22 @@ extends Node2D
 var rng = RandomNumberGenerator.new()
 var tdict = OS.get_time()
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$Time.start(GlobalAuto.time)
 	# init rng
-	rng.seed = tdict.hour * tdict.minute * tdict.second
-	
 	# scene setting
-	self.scale = Vector2(2.4,2.4)
+	self.scale = Vector2(1,1)
 	
 	# create map
 	create_map()
-	pass # Replace with function body.
 
 func create_map():
+	rng.seed = tdict.hour * tdict.minute * tdict.second
+	
+	var CellSize = Vector2(10,10)
+	var height = 480/CellSize.x
+	var width = 270/CellSize.y
 	# Assuming scale = 2.5 x 2.5:
 	# End X index = 68 
 	# End Y index = 38
@@ -30,43 +32,55 @@ func create_map():
 #				$TileMap.set_cell(x,y,1)
 	
 	# Path Generator
-	var x = rng.randi_range(2, 67)
-	var y = rng.randi_range(2, 37)
+	var x = rng.randi_range(0, 47)
+	var y = rng.randi_range(0, 26)
 	
-	var steps = rng.randi_range(50, 200)
-	
+	var steps = rng.randi_range(50, 100)
+
 	# first, make the starting box. TODO: add player spawn here
-	$TileMap.set_cell(x, y, 1)
-	$TileMap.set_cell(x+1, y, 1)
-	$TileMap.set_cell(x, y+1, 1)
-	$TileMap.set_cell(x+1, y+1, 1)
-	
+	startingCell(x,y)
 	for i in range(steps):
 		# first, decide direction
 		var dir = rng.randi_range(1,4)
 		
-		# North
+	# North
 		if dir == 1 and y > 2:
 			y -= 2
 		
 		# South
-		if dir == 2 and y < 35:
+		if dir == 2 and y < 24:
 			y += 2
-			
+		
 		# East
 		if dir == 3 and x > 2:
 			x -= 2
-		
-		if dir == 4 and x < 65:
+
+		if dir == 4 and x < 45:
 			x += 2
 		
-		$TileMap.set_cell(x, y, 1)
-		$TileMap.set_cell(x+1, y, 1)
-		$TileMap.set_cell(x, y+1, 1)
-		$TileMap.set_cell(x+1, y+1, 1)
-	
+		$TileMap.set_cell(x, y, 0)
+		$TileMap.set_cell(x+1, y, 0)
+		$TileMap.set_cell(x, y+1, 0)
+		$TileMap.set_cell(x+1, y+1, 0)
+	$CheeseEnd.position = $TileMap.map_to_world(Vector2(x+1, y+1))
 	$TileMap.update_bitmask_region()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	$Timer.set_text(str(stepify($Time.time_left, 0.01)))
+	#$Score.set_text(str(GlobalAuto.score))
+	$Score.set_text(str(GlobalAuto.moveSpeed))
+	
+func startingCell(x,y):
+	$TileMap.set_cell(x, y, 0)
+	$TileMap.set_cell(x+1, y, 0)
+	$TileMap.set_cell(x, y+1, 0)
+	$TileMap.set_cell(x+1, y+1, 0)
+	$Mouse.position = $TileMap.map_to_world(Vector2(x+1, y+1))
+	get_viewport().warp_mouse($Mouse.position)
+
+
+func _on_Time_timeout():
+	if GlobalAuto.score >= GlobalAuto.highScore:
+		GlobalAuto.highScore = GlobalAuto.score
+	get_tree().change_scene("res://Titlescreen.tscn")

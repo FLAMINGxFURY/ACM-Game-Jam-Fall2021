@@ -14,13 +14,21 @@ config/name="New Game Project"
 run/main_scene="res://BaseScene.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+GlobalAuto="*res://GlobalAuto.tscn"
+
 [display]
 
 window/size/width=480
 window/size/height=270
+window/size/resizable=false
 window/size/borderless=true
 window/size/test_width=1920
 window/size/test_height=1080
+window/dpi/allow_hidpi=true
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [physics]
 
